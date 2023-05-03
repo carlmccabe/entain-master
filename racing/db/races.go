@@ -125,6 +125,7 @@ func (m *racesRepo) scanRaces(
 			return nil, err
 		}
 
+		race.Status = getStatus(advertisedStart)
 		race.AdvertisedStartTime = ts
 
 		races = append(races, &race)
@@ -139,4 +140,14 @@ func getSortDirection(ascending bool) string {
 		return "ASC"
 	}
 	return "DESC"
+}
+
+// Helper function to determine status
+func getStatus(startTime time.Time) string {
+	currentTime := time.Now().Local()
+	if currentTime.After(startTime) {
+		return "closed"
+	}
+
+	return "open"
 }
