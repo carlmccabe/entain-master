@@ -290,8 +290,10 @@ type OrderBy struct {
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	Field     string `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
-	Ascending bool   `protobuf:"varint,2,opt,name=ascending,proto3" json:"ascending,omitempty"`
+	// Field name based on db, must match
+	Field string `protobuf:"bytes,1,opt,name=field,proto3" json:"field,omitempty"`
+	// Order ascending if true else order descending
+	Ascending bool `protobuf:"varint,2,opt,name=ascending,proto3" json:"ascending,omitempty"`
 }
 
 func (x *OrderBy) Reset() {
