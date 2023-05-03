@@ -30,6 +30,7 @@ message ListRacesRequestFilter {
   repeated int64 meeting_ids = 1;
   bool visible = 2;
   bool hidden = 3;
+  OrderBy orderBy = 4;
 }
 
 /* Resources */
@@ -48,4 +49,12 @@ message Race {
   bool visible = 5;
   // AdvertisedStartTime is the time the race is advertised to run.
   google.protobuf.Timestamp advertised_start_time = 6;
+}
+
+// Custom Order by 
+message OrderBy {
+  // Field name based on db, must match
+  string field = 1;
+  // Order ascending if true else order descending
+  bool ascending = 2;
 }

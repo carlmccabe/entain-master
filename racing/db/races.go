@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"strings"
 	"sync"
 	"time"
@@ -94,6 +95,11 @@ func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFil
 		query += " WHERE " + strings.Join(clauses, " AND ")
 	}
 
+	if filter.OrderBy != nil {
+		var sort string = fmt.Sprintf("ORDER BY %s %s", filter.OrderBy.Field, getSortDirection(filter.OrderBy.Ascending))
+		query += " " + sort
+	}
+
 	return query, args
 }
 
@@ -125,4 +131,12 @@ func (m *racesRepo) scanRaces(
 	}
 
 	return races, nil
+}
+
+// Helper function to determine the sort direction
+func getSortDirection(ascending bool) string {
+	if ascending {
+		return "ASC"
+	}
+	return "DESC"
 }
