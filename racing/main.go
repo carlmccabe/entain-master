@@ -13,14 +13,14 @@ import (
 )
 
 var (
-	grpcEndpoint = flag.String("grpc-endpoint", "localhost:9000", "gRPC server endpoint")
+	racingEndpoint = flag.String("racing-endpoint", "localhost:9000", "racing gRPC server endpoint")
 )
 
 func main() {
 	flag.Parse()
 
 	if err := run(); err != nil {
-		log.Fatalf("failed running grpc server: %s\n", err)
+		log.Fatalf("failed running racing grpc server: %s\n", err)
 	}
 }
 
@@ -49,7 +49,7 @@ func run() error {
 		),
 	)
 
-	log.Printf("gRPC server listening on: %s\n", *grpcEndpoint)
+	log.Printf("gRPC server listening on: %s\n", *racingEndpoint)
 
 	if err := grpcServer.Serve(conn); err != nil {
 		return err

@@ -42,8 +42,6 @@ message ListRacesRequestFilter {
   OrderBy orderBy = 4;
 }
 
-
-
 /* Resources */
 
 // A race resource.

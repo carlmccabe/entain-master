@@ -1,0 +1,31 @@
+package db
+
+const (
+	eventsList = "list"
+	event      = "event"
+)
+
+func getEventQueries() map[string]string {
+	return map[string]string{
+		eventsList: `
+			SELECT 
+				id, 
+				home,
+				away,
+				number, 
+				visible, 
+				advertised_start_time 
+			FROM events
+		`,
+		event: `
+			SELECT
+				id, 
+				home,
+				away, 
+				number, 
+				visible, 
+				advertised_start_time 
+			FROM events WHERE id = ?
+		`,
+	}
+}
