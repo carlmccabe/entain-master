@@ -26,6 +26,7 @@ message ListRacesRequestFilter {
   repeated int64 meeting_ids = 1;
   bool visible = 2;
   bool hidden = 3;
+  OrderBy orderBy = 4;
 }
 
 /* Resources */
@@ -46,3 +47,8 @@ message Race {
   google.protobuf.Timestamp advertised_start_time = 6;
 }
 
+// Custom Order by 
+message OrderBy {
+  string field = 1;
+  bool ascending = 2;
+}
