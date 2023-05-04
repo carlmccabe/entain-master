@@ -45,6 +45,8 @@ message Race {
   bool visible = 5;
   // AdvertisedStartTime is the time the race is advertised to run.
   google.protobuf.Timestamp advertised_start_time = 6;
+  // Open represents the AdvertisedStartTime in relation to the current time, false for closed
+  string status = 7;
 }
 
 // Custom Order by 
