@@ -164,10 +164,6 @@ func (m *racesRepo) scanRaces(
 	return races, nil
 }
 
-// func formatRace(race racing.Race) racing.Race {
-
-// }
-
 // Helper function to determine the sort direction
 func getSortDirection(ascending bool) string {
 	if ascending {
