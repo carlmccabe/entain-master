@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -20,6 +21,9 @@ type RacesRepo interface {
 
 	// List will return a list of races.
 	List(filter *racing.ListRacesRequestFilter) ([]*racing.Race, error)
+
+	// GetRaceById
+	GetRaceById(id int64) (*racing.Race, error)
 }
 
 type racesRepo struct {
@@ -61,6 +65,32 @@ func (r *racesRepo) List(filter *racing.ListRacesRequestFilter) ([]*racing.Race,
 	}
 
 	return r.scanRaces(rows)
+}
+
+func (r *racesRepo) GetRaceById(id int64) (*racing.Race, error) {
+	query := getRaceQueries()[race]
+	row := r.db.QueryRow(query, strconv.FormatInt(id, 10))
+
+	var race racing.Race
+	var advertisedStart time.Time
+
+	err := row.Scan(&race.Id, &race.MeetingId, &race.Name, &race.Number, &race.Visible, &advertisedStart)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	ts, err := ptypes.TimestampProto(advertisedStart)
+	if err != nil {
+		return nil, err
+	}
+
+	race.Status = getStatus(advertisedStart)
+	race.AdvertisedStartTime = ts
+
+	return &race, nil
 }
 
 func (r *racesRepo) applyFilter(query string, filter *racing.ListRacesRequestFilter) (string, []interface{}) {
