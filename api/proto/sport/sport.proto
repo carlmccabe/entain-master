@@ -1,0 +1,77 @@
+syntax = "proto3";
+package sport;
+
+option go_package = "/sport";
+
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+
+service Sport {
+  // ListEventys returns a list of all events.
+  rpc ListEvents(ListEventsRequest) returns (ListEventsResponse) {
+    option (google.api.http) = { post: "/v1/list-events", body: "*" };
+  }
+  
+  // GetEventById returns the event found using the id.
+  rpc GetEventById(GetEventByIdRequest) returns (GetEventByIdResponse) {
+    option (google.api.http) = { get: "/v1/event-by-id/{id}"};
+  }
+}
+
+/* Requests/Responses */
+
+// Request for ListEvents call.
+message ListEventsRequest {
+  ListEventsRequestFilter filter = 1;
+}
+
+// Response to ListEvents call.
+message ListEventsResponse {
+  repeated Event sports = 1;
+}
+
+// Request for GetcById call.
+message GetEventByIdRequest {
+  string id = 1;
+}
+
+// Response to GetSportById call.
+message GetEventByIdResponse {
+  Event sport = 1;
+}
+
+// Filter for listing sports.
+message ListEventsRequestFilter {
+  repeated int64 meeting_ids = 1;
+  bool visible = 2;
+  bool hidden = 3;
+  OrderBy orderBy = 4;
+}
+
+/* Resources */
+
+// A Event resource.
+message Event {
+  // ID represents a unique identifier for the Event.
+  int64 id = 1;
+  // Home is the home team name.
+  string home = 2;
+  // Away is the away team name.
+  string away = 3;
+  // Number represents the game number of the event during regular season.
+  int64 number = 4;
+  // Visible represents whether or not the Event is visible.
+  bool visible = 5;
+  // AdvertisedStartTime is the time the Event is advertised to start.
+  google.protobuf.Timestamp advertised_start_time = 6;
+  // Open represents the AdvertisedStartTime in relation to the current time, false for closed
+  string status = 7;
+}
+
+// Custom Order by 
+message OrderBy {
+  // Field name based on db, must match
+  string field = 1;
+  // Order ascending if true else order descending
+  bool ascending = 2;
+}
